@@ -30,41 +30,21 @@ import samurai.web.ProgressListener;
 import samurai.web.ThreadFilter;
 import samurai.web.VelocityHtmlRenderer;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JEditorPane;
-import javax.swing.JLabel;
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JScrollPane;
-import javax.swing.JSplitPane;
-import javax.swing.JToggleButton;
-import javax.swing.ListCellRenderer;
-import javax.swing.ListSelectionModel;
-import javax.swing.SwingUtilities;
+import javax.swing.*;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Component;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
+
+import static samurai.util.FileUtil.saveStreamAsFile;
 
 public class ThreadDumpPanel extends LogRenderer implements HyperlinkListener,
         ConfigurationListener, ClipBoardOperationListener {
@@ -510,32 +490,6 @@ public class ThreadDumpPanel extends LogRenderer implements HyperlinkListener,
         }
 
     };
-
-    private void saveStreamAsFile(File parentDir, String fileName) throws IOException {
-        InputStream is = ThreadDumpPanel.class.getResourceAsStream("/samurai/web/images/" + fileName);
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(parentDir.getAbsolutePath() + "/" + fileName);
-            byte[] buf = new byte[256];
-            int count;
-            while (-1 != (count = is.read(buf))) {
-                fos.write(buf, 0, count);
-            }
-        } finally {
-            if (null != fos) {
-                try {
-                    fos.close();
-                } catch (IOException ignore) {
-                }
-            }
-            if (null != is) {
-                try {
-                    is.close();
-                } catch (IOException ignore) {
-                }
-            }
-        }
-    }
 
     class ProgressTask implements Runnable {
         int finished, all;
