@@ -50,6 +50,7 @@ import java.awt.dnd.DropTargetListener;
 import java.awt.dnd.InvalidDnDOperationException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
@@ -61,7 +62,11 @@ import java.io.IOException;
 import java.util.List;
 
 public class MainFrame extends JFrame implements KeyListener, FileHistoryListener, CloseListener {
-    private static GUIResourceBundle resources = GUIResourceBundle.getInstance();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4818855105630973391L;
+	private static GUIResourceBundle resources = GUIResourceBundle.getInstance();
     private JMenuItem menuEditPreferences = new JMenuItem("menu.edit.preferences");
     public ConfigDialog configDialog;
     private JMenuBar menuBar = new JMenuBar();
@@ -91,7 +96,12 @@ public class MainFrame extends JFrame implements KeyListener, FileHistoryListene
     private JMenuItem menuHelpAbout = new JMenuItem("menu.help.about");
     public AboutSamuraiDialog dialog = new AboutSamuraiDialog(this);
     private TileTabPanel<SamuraiPanel> tab = new TileTabPanel<SamuraiPanel>(true){
-        protected void selectedIndexChanged(int index){
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 8057445738451708427L;
+
+		protected void selectedIndexChanged(int index){
             setSelectedEncoding(getSelectedComponent().getEncoding());
         }
     };
@@ -540,7 +550,7 @@ public class MainFrame extends JFrame implements KeyListener, FileHistoryListene
             return;
         }
 
-        if (searcher.isDisplayable() && e.getKeyChar() != e.CHAR_UNDEFINED && ((e.getModifiers() & e.SHIFT_DOWN_MASK) == e.getModifiers())) {
+        if (searcher.isDisplayable() && e.getKeyChar() != KeyEvent.CHAR_UNDEFINED && ((e.getModifiers() & InputEvent.SHIFT_DOWN_MASK) == e.getModifiers())) {
             switch (e.getKeyChar()) {
                 case KeyEvent.VK_ENTER:
                     searchNext();
@@ -575,7 +585,7 @@ public class MainFrame extends JFrame implements KeyListener, FileHistoryListene
         } else {
             textCom = getActiveComponent();
         }
-        if (searcher.isDisplayable() && e.getKeyChar() != e.CHAR_UNDEFINED) {
+        if (searcher.isDisplayable() && e.getKeyChar() != KeyEvent.CHAR_UNDEFINED) {
             switch (e.getKeyChar()) {
                 case KeyEvent.VK_ENTER:
                     searchNext();
@@ -589,7 +599,7 @@ public class MainFrame extends JFrame implements KeyListener, FileHistoryListene
                     searcher.config_searchText.grabFocus();
             }
         } else if (null != textCom) {
-            if (e.getKeyChar() != e.CHAR_UNDEFINED && ((e.getModifiers() & e.SHIFT_MASK) == e.getModifiers())) {
+            if (e.getKeyChar() != KeyEvent.CHAR_UNDEFINED && ((e.getModifiers() & InputEvent.SHIFT_MASK) == e.getModifiers())) {
                 switch (e.getKeyChar()) {
                     case KeyEvent.VK_BACK_SPACE:
                         //delete one character from the search text
@@ -694,9 +704,9 @@ public class MainFrame extends JFrame implements KeyListener, FileHistoryListene
             if (transfer
                     .isDataFlavorSupported(DataFlavor.javaFileListFlavor)) {
 //dropped file(s)
-                List filelist = (List) transfer.getTransferData(DataFlavor.
+                List<?> filelist = (List<?>) transfer.getTransferData(DataFlavor.
                         javaFileListFlavor);
-                File[] files = (File[]) filelist.toArray(new File[0]);
+                File[] files = filelist.toArray(new File[0]);
                 for (int i = 0; i < files.length; i++) {
                     if (files[i].isDirectory()) {
                         //
@@ -922,7 +932,11 @@ public class MainFrame extends JFrame implements KeyListener, FileHistoryListene
 
 //    static GUIResourceBundle resource = GUIResourceBundle.getInstance("encoding-display-names");
     class EncodingMenuItem extends JCheckBoxMenuItem {
-        String encoding;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -5066001166267604337L;
+		String encoding;
 
         EncodingMenuItem(String encoding) {
             super(encoding);

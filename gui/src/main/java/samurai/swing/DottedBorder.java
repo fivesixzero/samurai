@@ -21,7 +21,11 @@ import java.awt.Graphics;
 import java.awt.SystemColor;
 
 public class DottedBorder extends EmptyBorder {
-    private static final int borderWidth = 3;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8009432961187968612L;
+	private static final int borderWidth = 3;
 
     public DottedBorder() {
         super(borderWidth, borderWidth, borderWidth, borderWidth);

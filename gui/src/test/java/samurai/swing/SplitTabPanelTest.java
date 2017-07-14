@@ -28,7 +28,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class SplitTabPanelTest extends JFrame {
-    GridBagLayout gbl = new GridBagLayout();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8852706594515139756L;
+	GridBagLayout gbl = new GridBagLayout();
     BorderLayout borderLayout1 = new BorderLayout();
     TilePanel splitTabPanel = new TilePanel(true);
     int orientation = 1;
@@ -69,7 +73,7 @@ public class SplitTabPanelTest extends JFrame {
         ta1.setPreferredSize(new Dimension(0,0));
         ta2.setPreferredSize(new Dimension(0,0));
         ta3.setPreferredSize(new Dimension(0,0));
-           c.fill = c.BOTH;
+           c.fill = GridBagConstraints.BOTH;
         c.gridy = 0;
         c.weighty = 100;
 

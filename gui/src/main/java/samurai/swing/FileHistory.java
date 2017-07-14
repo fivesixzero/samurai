@@ -175,7 +175,11 @@ public final class FileHistory {
     }
 
     class HistoryMenu extends JMenuItem implements ActionListener {
-        private File file;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 8457118125167667734L;
+		private File file;
 
         public HistoryMenu(File file) {
             super(file.getName() + " - " + file.getAbsolutePath());

@@ -22,7 +22,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 public class NestedSplitPanes extends JFrame {
-    JButton[] arrB = new JButton[16];
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -4251126854646005271L;
+	JButton[] arrB = new JButton[16];
     JSplitPane[] arrS = new JSplitPane[15];
 
     public NestedSplitPanes() {

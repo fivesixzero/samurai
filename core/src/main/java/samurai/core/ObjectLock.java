@@ -20,10 +20,10 @@ import java.util.List;
 
 public class ObjectLock implements Serializable {
     private SunThreadDump threadDump;
-    private List objects;
+    private List<?> objects;
     private static final long serialVersionUID = -1899274398012153019L;
 
-    public ObjectLock(SunThreadDump threadDump, List objects) {
+    public ObjectLock(SunThreadDump threadDump, List<?> objects) {
         this.threadDump = threadDump;
         this.objects = objects;
     }
@@ -32,7 +32,7 @@ public class ObjectLock implements Serializable {
         return this.threadDump;
     }
 
-    public List getObject() {
+    public List<?> getObject() {
         return this.objects;
     }
 }

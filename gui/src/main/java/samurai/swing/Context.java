@@ -42,7 +42,7 @@ public class Context {
         this.statusBar = statusBar;
         this.tab = tab;
         this.searchPanel = new SearchPanel(this);
-        this.resources.inject(searchPanel);
+        Context.resources.inject(searchPanel);
         this.config.apply(searchPanel);
         try {
 

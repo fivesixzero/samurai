@@ -24,7 +24,11 @@ import java.io.File;
 import java.io.IOException;
 
 public abstract class LogRenderer extends JPanel implements LogMonitor {
-    private boolean hideOnClose;
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1391404332241998129L;
+	private boolean hideOnClose;
     private SamuraiPanel samuraiPanel;
     private boolean added = false;
 

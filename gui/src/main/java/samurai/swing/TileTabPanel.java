@@ -39,7 +39,11 @@ import java.util.List;
 
 public class TileTabPanel<T extends JComponent> extends JPanel implements MouseListener, MouseMotionListener {
 
-    private static GUIResourceBundle resources = GUIResourceBundle.getInstance();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -849612011752061673L;
+	private static GUIResourceBundle resources = GUIResourceBundle.getInstance();
     JPopupMenu popupMenu = new JPopupMenu();
     private JMenuItem menuCloseTab = new JMenuItem("TileTabPanel.closeTab");
     private JMenuItem menuTab = new JMenuItem("TileTabPanel.tab");
@@ -678,8 +682,8 @@ public class TileTabPanel<T extends JComponent> extends JPanel implements MouseL
                     isForwardDrag ? destination + 1 : destination);
             draggingPaneIndex = destination;
             tab.setSelectedIndex(draggingPaneIndex);
-            ComponentInfo ci1 = components.get(draggingPaneIndex);
-            ComponentInfo ci2 = components.get(destination);
+            ComponentInfo<T> ci1 = components.get(draggingPaneIndex);
+            ComponentInfo<T> ci2 = components.get(destination);
             components.set(draggingPaneIndex, ci2);
             components.set(destination, ci1);
         }

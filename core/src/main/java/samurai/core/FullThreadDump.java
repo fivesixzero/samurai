@@ -58,9 +58,9 @@ public abstract class FullThreadDump implements Serializable {
     public ObjectLock[] getObjectLocks() {
         if(this.objectLocks == null){
             List<ObjectLock> objectLockList = new ArrayList<ObjectLock>();
-            for (Iterator iter = threadDumps.iterator(); iter.hasNext();) {
+            for (Iterator<ThreadDump> iter = threadDumps.iterator(); iter.hasNext();) {
                 SunThreadDump threadDump = (SunThreadDump) iter.next();
-                List theLockList = threadDump.getLockedLines();
+                List<StackLine> theLockList = threadDump.getLockedLines();
                 if (0 != theLockList.size()) {
                     objectLockList.add(new ObjectLock(threadDump,
                             threadDump.getLockedLines()));

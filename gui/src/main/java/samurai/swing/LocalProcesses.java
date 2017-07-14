@@ -28,7 +28,6 @@ import javax.swing.event.MenuListener;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.nio.file.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class LocalProcesses {
@@ -102,7 +101,11 @@ public class LocalProcesses {
     }
 
     class LocalProcessMenuItem extends JMenuItem {
-        VM vm;
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -3948632588438794232L;
+		VM vm;
 
         public LocalProcessMenuItem(VM vm) {
             super(String.format("%s %s", vm.getPid(), vm.getFqcn()));

@@ -154,8 +154,8 @@ public abstract class ThreadDump implements Serializable {
                 isEqual = true;
             } else {
                 if (that.size() == this.size()) {
-                    List thatList = that.getStackLines();
-                    List thisList = this.getStackLines();
+                    List<?> thatList = that.getStackLines();
+                    List<?> thisList = this.getStackLines();
                     isEqual = true;
                     for (int i = 0; i < this.size(); i++) {
                         if (!thisList.get(i).equals(thatList.get(i))) {

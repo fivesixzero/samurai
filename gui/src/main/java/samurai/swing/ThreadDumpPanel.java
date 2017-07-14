@@ -48,7 +48,11 @@ import static samurai.util.FileUtil.saveStreamAsFile;
 
 public class ThreadDumpPanel extends LogRenderer implements HyperlinkListener,
         ConfigurationListener, ClipBoardOperationListener {
-    public String config_dumpFontFamily = "Monospace";
+    /**
+	 *  Added generated serialVersionUID 2017-07-14
+	 */
+	private static final long serialVersionUID = -9149012304456938403L;
+	public String config_dumpFontFamily = "Monospace";
     public String config_dumpFontSize = "12";
     private Properties velocityContext = new Properties();
 
@@ -71,7 +75,12 @@ public class ThreadDumpPanel extends LogRenderer implements HyperlinkListener,
     BorderLayout borderLayout1 = new BorderLayout();
     private String referer = null;
     JEditorPane threadDumpPanel = new JEditorPane() {
-        public void paint(Graphics g) {
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 5518549512571274893L;
+
+		public void paint(Graphics g) {
             super.paint(g);
             if (referer != null) {
                 SwingUtilities.invokeLater(new Runnable() {
@@ -614,7 +623,12 @@ public class ThreadDumpPanel extends LogRenderer implements HyperlinkListener,
     }
 
     final ThreadStatistic statistic = new ThreadStatistic() {
-        public synchronized void onFullThreadDump(FullThreadDump fullThreadDump) {
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -7521285638382010635L;
+
+		public synchronized void onFullThreadDump(FullThreadDump fullThreadDump) {
             super.onFullThreadDump(fullThreadDump);
             invokeLater(new Runnable() {
                 public void run() {
@@ -631,7 +645,7 @@ public class ThreadDumpPanel extends LogRenderer implements HyperlinkListener,
     JSplitPane jSplitPane1 = new JSplitPane();
     JScrollPane jScrollPane2 = new JScrollPane();
     JScrollPane jScrollPane3 = new JScrollPane();
-    JList showThreadList = new JList();
+    JList<Object> showThreadList = new JList<Object>();
     JLabel threadDumpStatus = new JLabel();
     File currentFile;
 
@@ -686,8 +700,13 @@ public class ThreadDumpPanel extends LogRenderer implements HyperlinkListener,
         updateHtml();
     }
 
-    class ThreadCellRenderer extends JLabel implements ListCellRenderer {
-        public ThreadCellRenderer() {
+    class ThreadCellRenderer extends JLabel implements ListCellRenderer<Object> {
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = 6890179274224751162L;
+
+		public ThreadCellRenderer() {
             setOpaque(true);
         }
 

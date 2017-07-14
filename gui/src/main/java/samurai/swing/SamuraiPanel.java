@@ -40,7 +40,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class SamuraiPanel extends JPanel implements LogMonitor, RemoveListener {
-    private static ImageIcon monitoringIcon = new ImageIcon(SamuraiPanel.class.getResource("images/monitoring.gif"));
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -8152538490940372878L;
+	private static ImageIcon monitoringIcon = new ImageIcon(SamuraiPanel.class.getResource("images/monitoring.gif"));
     private static ImageIcon readingIcon = new ImageIcon(SamuraiPanel.class.getResource("images/reading.gif"));
     /*package*/static ImageIcon stoppedIcon = new ImageIcon(SamuraiPanel.class.getResource("images/stopped.gif"));
     private List<LogRenderer> logRenderers = new ArrayList<LogRenderer>(3);

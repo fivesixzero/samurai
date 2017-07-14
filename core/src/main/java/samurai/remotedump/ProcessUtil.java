@@ -30,7 +30,7 @@ public class ProcessUtil {
         List<VM> vms = new ArrayList<>();
         HostIdentifier hi = new HostIdentifier(host);
         MonitoredHost mh = MonitoredHost.getMonitoredHost(hi);
-        Set jvms = mh.activeVms();
+        Set<?> jvms = mh.activeVms();
         for (Object pidInteger : jvms) {
             try {
                 int pid = (Integer) pidInteger;

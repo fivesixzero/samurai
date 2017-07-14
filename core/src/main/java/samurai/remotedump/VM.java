@@ -26,11 +26,35 @@ public class VM {
     private String fullCommandLine = "";
 
     public VM(int pid, String fullCommandLine) {
-        this.pid = pid;
+        this.setPid(pid);
         if (fullCommandLine != null) {
-            this.fullCommandLine = fullCommandLine;
+            this.setFullCommandLine(fullCommandLine);
             fullCommandLine = fullCommandLine.replaceFirst("^com\\.intellij\\.rt\\.execution\\.application\\.AppMain ", "");
-            this.fqcn = fullCommandLine.replaceFirst(" .*$", "");
+            this.setFqcn(fullCommandLine.replaceFirst(" .*$", ""));
         }
     }
+
+	public int getPid() {
+		return pid;
+	}
+
+	public void setPid(int pid) {
+		this.pid = pid;
+	}
+
+	public String getFqcn() {
+		return fqcn;
+	}
+
+	public void setFqcn(String fqcn) {
+		this.fqcn = fqcn;
+	}
+
+	public String getFullCommandLine() {
+		return fullCommandLine;
+	}
+
+	public void setFullCommandLine(String fullCommandLine) {
+		this.fullCommandLine = fullCommandLine;
+	}
 }

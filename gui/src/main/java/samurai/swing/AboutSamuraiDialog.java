@@ -33,7 +33,11 @@ import java.awt.event.WindowEvent;
 
 public class AboutSamuraiDialog extends JDialog implements ActionListener {
 
-    public JButton button1 = new JButton();
+    /**
+	 *   Added generated serialVersionUID 2017-07-14
+	 */
+	private static final long serialVersionUID = -3703864437532925337L;
+	public JButton button1 = new JButton();
     JLabel imageLabel = new JLabel();
     public JLabel versionLabel = new JLabel();
     public JLabel copyrightLabel = new JLabel();

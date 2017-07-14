@@ -69,7 +69,7 @@ public class VelocityHtmlRenderer implements Constants {
         }
     }
 
-    public String render(ThreadFilter filter, ThreadStatistic statistic, Map myContext) {
+    public String render(ThreadFilter filter, ThreadStatistic statistic, Map<?, ?> myContext) {
 
         VelocityContext context = new VelocityContext(new VelocityContext(myContext));
         Writer writer = new StringWriter(20480);
@@ -129,7 +129,7 @@ public class VelocityHtmlRenderer implements Constants {
         filter.setMode(Constants.MODE_TABLE);
         filter.setThreadId(stats.getFirstThreadId());
         filter.setFullThreadIndex(0);
-        Map velocityContext = new HashMap(2);
+        Map<?, ?> velocityContext = new HashMap<Object, Object>(2);
         //save table view
         saveAs(directory, Constants.MODE_TABLE + "/index.html", stats, filter, velocityContext);
         listener.notifyProgress(progress++, count);
@@ -158,7 +158,7 @@ public class VelocityHtmlRenderer implements Constants {
         } while (filter.getShrinkIdle());
     }
 
-    public void saveAs(File dir, String fileName, ThreadStatistic stats, ThreadFilter filter, Map velocityContext) throws IOException {
+    public void saveAs(File dir, String fileName, ThreadStatistic stats, ThreadFilter filter, Map<?, ?> velocityContext) throws IOException {
         saveAs(dir, fileName, render(filter, stats, velocityContext));
     }
 

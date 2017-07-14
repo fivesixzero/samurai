@@ -28,7 +28,11 @@ import java.util.List;
 
 
 public class GraphPanel extends LogRenderer implements ClipBoardOperationListener , LineGraphRenderer{
-    private static GUIResourceBundle resources = GUIResourceBundle.getInstance();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 4753554308128757017L;
+	private static GUIResourceBundle resources = GUIResourceBundle.getInstance();
     List<LineGraphPanel> graphs = new ArrayList<LineGraphPanel>(1);
     private Context context;
 
