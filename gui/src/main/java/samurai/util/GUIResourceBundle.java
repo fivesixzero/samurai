@@ -105,7 +105,7 @@ public class GUIResourceBundle extends ResourceBundle {
         try {
             props.load(is);
         } catch (NullPointerException npe) {
-            throw new MissingResourceException("Message resource not foundn:"+location,packageName,resourceName);
+            throw new MissingResourceException("Message resource not found:"+location,packageName,resourceName);
         } catch (IOException ioe) {
             throw new MissingResourceException("Message resource not found:"+location,packageName,resourceName);
         }finally{
