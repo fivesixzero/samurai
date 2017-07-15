@@ -36,7 +36,7 @@ public class ConfigDialog extends javax.swing.JDialog {
     public javax.swing.JCheckBox config_wrapLog = new javax.swing.JCheckBox();
     public javax.swing.JComboBox<String> config_logFontFamily = new javax.swing.JComboBox<String>();
     public javax.swing.JComboBox<String> config_logFontSize = new javax.swing.JComboBox<String>();
-    public javax.swing.JComboBox config_encoding = new javax.swing.JComboBox();
+    public javax.swing.JComboBox<String> config_encoding = new javax.swing.JComboBox<String>();
 
     javax.swing.JPanel dumpConfigPanel = new javax.swing.JPanel();
     public javax.swing.JLabel dumpFontSample = new javax.swing.JLabel();

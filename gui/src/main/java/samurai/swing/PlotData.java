@@ -42,6 +42,7 @@ import java.text.DecimalFormat;
     /*package*/ PlotData() {
     }
 
+    @SuppressWarnings("unchecked")
     /*package*/ void setLabels(String[] labels) {
         this.labels = labels;
         this.initialized = true;
