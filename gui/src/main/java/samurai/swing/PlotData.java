@@ -26,8 +26,8 @@ import java.text.DecimalFormat;
     private List<double[/*double ydata[]*//*double x */]>[] datas;
     private String[] labels;
     private int size;
+    private double maxX;
     private double[] maxY;
-    private double[] maxX;
     private double[] minY;
     private boolean[] visible;
     private Color[] colors;
@@ -62,6 +62,13 @@ import java.text.DecimalFormat;
         this.datas[xDataIndex] = new ArrayList<double[]>(1);
     }
 
+    /*package*/ double getMaxX() {
+        if (!initialized) {
+            throw new IllegalStateException("not yet initialized");
+        }
+        return maxX;
+    }
+    
     /*package*/ double getMaxAt(int index) {
         if (!initialized) {
             throw new IllegalStateException("not yet initialized");
@@ -221,7 +228,9 @@ import java.text.DecimalFormat;
                                 index = size() - 1;
                             }
                         }
-                        int drawX = width - drawWidth;
+//                      int drawX = width - drawWidth;
+//                      int drawX = x + (drawWidth - index);
+                        int drawX = x;
                         int lastY = maxY - (int) ((double) height / getMaxAt(i) * getValueAt(i, index - drawWidth+1));
                         for (int j = index - drawWidth+2; j < index; j++) {
 //                        for (int j = --index; j >= 0; j--) {

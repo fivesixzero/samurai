@@ -77,7 +77,7 @@ public class TestFileHistory extends TestCase {
         File doesnotExist2 = new File("foobarfoobarbar");
         File directory1 = new File("classes");
         File directory2 = new File("src");
-        File file5 = new File("src/main/resources/samurai/swing/default.properties");
+        File file5 = new File("src/main/resources/samurai/swing/messages.properties");
         history.open(file1);
         history.open(file2);
         history.open(directory1);
