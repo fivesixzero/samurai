@@ -173,7 +173,7 @@ td.0.10.isBlocked=false
 td.0.10.isBlocking=false
 td.0.10.isDaemon=false
 td.0.10.isDeadLocked=false
-td.0.10.isIdle=false
+td.0.10.isIdle=true
 
 #"VM Thread" prio=9 tid=0x0000000101820800 nid=0x1007a7000 runnable 
 td.0.11.blockedObjectId=null
@@ -390,7 +390,7 @@ td.1.10.isBlocked=false
 td.1.10.isBlocking=false
 td.1.10.isDaemon=false
 td.1.10.isDeadLocked=false
-td.1.10.isIdle=false
+td.1.10.isIdle=true
 
 #"VM Thread" prio=9 tid=0x0000000101820800 nid=0x1007a7000 runnable 
 td.1.11.blockedObjectId=null
@@ -607,7 +607,7 @@ td.2.10.isBlocked=false
 td.2.10.isBlocking=false
 td.2.10.isDaemon=false
 td.2.10.isDeadLocked=false
-td.2.10.isIdle=false
+td.2.10.isIdle=true
 
 #"VM Thread" prio=9 tid=0x0000000101820800 nid=0x1007a7000 runnable 
 td.2.11.blockedObjectId=null
