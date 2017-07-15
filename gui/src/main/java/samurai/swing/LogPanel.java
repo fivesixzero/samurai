@@ -33,7 +33,11 @@ import java.io.File;
 
 public class LogPanel extends LogRenderer implements AdjustmentListener,
         ConfigurationListener, ClipBoardOperationListener {
-    private static GUIResourceBundle resources = GUIResourceBundle.getInstance();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 6309009452384122770L;
+	private static GUIResourceBundle resources = GUIResourceBundle.getInstance();
     JScrollPane jScrollPane1 = new JScrollPane();
     public JTextArea textArea = new JTextArea();
 //    public UnlimitedTextArea textArea = new UnlimitedTextArea();

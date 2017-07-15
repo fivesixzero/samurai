@@ -35,7 +35,11 @@ import java.util.List;
 
 /*package*/class TilePanel extends JPanel implements AncestorListener {
 
-    GridBagLayout gridBagLayout = new GridBagLayout();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 3362131974681435169L;
+	GridBagLayout gridBagLayout = new GridBagLayout();
     private List<ComponentInfo> components;
     /**
      *

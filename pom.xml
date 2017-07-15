@@ -27,8 +27,27 @@
             <email>yusuke@mac.com</email>
             <url>http://samuraism.jp/</url>
             <roles>
+                <role>originator</role>
                 <role>lead</role>
                 <role>architect</role>
+                <role>developer</role>
+            </roles>
+            <timezone>9</timezone>
+        </developer>        <developer>
+            <id>Sundeep</id>
+            <name>B</name>
+            <email></email>
+            <url>https://github.com/SundeepB</url>
+            <roles>
+                <role>developer</role>
+            </roles>
+            <timezone>9</timezone>
+        </developer>        <developer>
+            <id>fivesixzero</id>
+            <name>Erik</name>
+            <email></email>
+            <url>https://github.com/fivesixzero</url>
+            <roles>
                 <role>developer</role>
             </roles>
             <timezone>9</timezone>
@@ -76,7 +95,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.0-alpha-4</version>
+                        <version>1.6</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -95,4 +114,7 @@
         <module>core</module>
         <module>gui</module>
     </modules>
+    <properties>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
 </project>

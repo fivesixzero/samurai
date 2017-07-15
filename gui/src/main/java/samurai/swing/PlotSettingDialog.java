@@ -38,7 +38,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 public class PlotSettingDialog extends JDialog {
-    JPanel panel1 = new JPanel();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 2770678002974701167L;
+	JPanel panel1 = new JPanel();
     GridBagLayout gridBagLayout1 = new GridBagLayout();
     public JButton okButton = new JButton();
     public JButton cancelButton = new JButton();
@@ -120,7 +124,12 @@ public class PlotSettingDialog extends JDialog {
         getRootPane().getActionMap().put(
                 ESC_ACTION_KEY,
                 new AbstractAction() {
-                    public void actionPerformed(ActionEvent e) {
+                    /**
+					 * 
+					 */
+					private static final long serialVersionUID = -1965953929344691211L;
+
+					public void actionPerformed(ActionEvent e) {
                         cancelPressed = true;
                         setVisible(false);
                     }

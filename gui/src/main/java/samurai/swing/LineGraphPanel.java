@@ -38,10 +38,19 @@ import java.awt.image.BufferedImage;
 
 
 public class LineGraphPanel extends JPanel implements ClipBoardOperationListener, LineGraph{
-    BorderLayout borderLayout1 = new BorderLayout();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5829294145078236245L;
+	BorderLayout borderLayout1 = new BorderLayout();
     JScrollBar scrollBar = new JScrollBar();
     JPanel panel = new JPanel() {
-        public void paint(Graphics g) {
+        /**
+		 * 
+		 */
+		private static final long serialVersionUID = -6827951352089906838L;
+
+		public void paint(Graphics g) {
             super.paint(g);
             draw(g, this.getBounds());
         }

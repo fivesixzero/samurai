@@ -36,7 +36,11 @@ import java.awt.event.MouseMotionListener;
 
 /*package*/class Tile extends JPanel {
 
-    private BorderLayout borderLayout1 = new BorderLayout();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 522874047692999628L;
+	private BorderLayout borderLayout1 = new BorderLayout();
     private BorderLayout borderLayout2 = new BorderLayout();
     /*package*/ JLabel title = new JLabel();
     JComponent component;

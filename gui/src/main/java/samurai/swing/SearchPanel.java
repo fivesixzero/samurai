@@ -36,7 +36,11 @@ import java.awt.event.FocusEvent;
 import java.awt.event.FocusListener;
 
 public class SearchPanel extends JPanel {
-    public JTextField config_searchText = new JTextField();
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 346425279036111310L;
+	public JTextField config_searchText = new JTextField();
     public JCheckBox config_matchCase = new JCheckBox("*SearchPanel.matchCase*");
     public JLabel find = new JLabel("*SearchPanel.find*");
     public boolean useRegexp = false;

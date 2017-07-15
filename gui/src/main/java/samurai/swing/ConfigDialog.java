@@ -16,7 +16,11 @@
 package samurai.swing;
 
 public class ConfigDialog extends javax.swing.JDialog {
-//    private static GUIResourceBundle resources = GUIResourceBundle.getInstance();
+/**
+	 * 
+	 */
+	private static final long serialVersionUID = 7498354557311237215L;
+	//    private static GUIResourceBundle resources = GUIResourceBundle.getInstance();
     public javax.swing.JButton okButton = new javax.swing.JButton();
     public javax.swing.JButton cancelButton = new javax.swing.JButton();
     public javax.swing.JTabbedPane jTabbedPane1 = new javax.swing.JTabbedPane();
@@ -30,16 +34,16 @@ public class ConfigDialog extends javax.swing.JDialog {
     public javax.swing.JLabel logFontSample = new javax.swing.JLabel();
     public javax.swing.JLabel encoding = new javax.swing.JLabel();
     public javax.swing.JCheckBox config_wrapLog = new javax.swing.JCheckBox();
-    public javax.swing.JComboBox config_logFontFamily = new javax.swing.JComboBox();
-    public javax.swing.JComboBox config_logFontSize = new javax.swing.JComboBox();
-    public javax.swing.JComboBox config_encoding = new javax.swing.JComboBox();
+    public javax.swing.JComboBox<String> config_logFontFamily = new javax.swing.JComboBox<String>();
+    public javax.swing.JComboBox<String> config_logFontSize = new javax.swing.JComboBox<String>();
+    public javax.swing.JComboBox<String> config_encoding = new javax.swing.JComboBox<String>();
 
     javax.swing.JPanel dumpConfigPanel = new javax.swing.JPanel();
     public javax.swing.JLabel dumpFontSample = new javax.swing.JLabel();
     java.awt.GridBagLayout dumpConfigLayout = new java.awt.GridBagLayout();
     public javax.swing.JCheckBox config_wrapDump = new javax.swing.JCheckBox();
-    public javax.swing.JComboBox config_dumpFontFamily = new javax.swing.JComboBox();
-    public javax.swing.JComboBox config_dumpFontSize = new javax.swing.JComboBox();
+    public javax.swing.JComboBox<String> config_dumpFontFamily = new javax.swing.JComboBox<String>();
+    public javax.swing.JComboBox<String> config_dumpFontSize = new javax.swing.JComboBox<String>();
 
 //  public JPanel searchConfigPanel = new JPanel();
 //  public JCheckBox config_useRegexp = new JCheckBox();
@@ -225,7 +229,12 @@ public class ConfigDialog extends javax.swing.JDialog {
         getRootPane().getActionMap().put(
                 ESC_ACTION_KEY,
                 new javax.swing.AbstractAction() {
-                    public void actionPerformed(java.awt.event.ActionEvent e) {
+                    /**
+					 * 
+					 */
+					private static final long serialVersionUID = 834976722409680306L;
+
+					public void actionPerformed(java.awt.event.ActionEvent e) {
                         setVisible(false);
                     }
                 });

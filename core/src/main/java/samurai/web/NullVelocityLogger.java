@@ -16,9 +16,9 @@
 package samurai.web;
 
 import org.apache.velocity.runtime.RuntimeServices;
-import org.apache.velocity.runtime.log.LogSystem;
+import org.apache.velocity.runtime.log.LogChute;
 
-public class NullVelocityLogger implements LogSystem {
+public class NullVelocityLogger implements LogChute {
     public NullVelocityLogger() {
     }
 
@@ -26,7 +26,25 @@ public class NullVelocityLogger implements LogSystem {
     }
 
     public void logVelocityMessage(int _int, String string) {
-//    System.out.println(string);
+    System.out.println(string);
     }
+
+	@Override
+	public boolean isLevelEnabled(int arg0) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public void log(int arg0, String arg1) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void log(int arg0, String arg1, Throwable arg2) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }
