@@ -53,7 +53,9 @@ public abstract class ThreadDump implements Serializable {
 
 
     public String getCondition() {
-        return this.CONDITION;
+//        return this.CONDITION;
+      return this.CONDITION.replaceAll("^\\s+", "");
+    	
     }
 
     public final List<StackLine> getStackLines() {
