@@ -13,3 +13,4 @@ target/*
 core/target/*
 gui/target/*
 savedhtml
+*.releaseBackup
