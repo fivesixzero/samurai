@@ -24,8 +24,11 @@ import org.apache.velocity.runtime.log.LogChute;
 
 public class NullVelocityLogger implements LogChute {
     
-    static int CHARLIMIT_CLASS = 12;    
-    private int logLevel = 1;
+    // Constant: Limit classnames to 24 chars
+    static int CHARLIMIT_CLASS = 24;
+    
+    // Default: logLevel INFO (no TRACE/DEBUG)
+    private int logLevel = INFO_ID;
     
     public NullVelocityLogger() {
     }
@@ -50,12 +53,14 @@ public class NullVelocityLogger implements LogChute {
                 break;
         }
         
-        DateFormat dateFormat  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        DateFormat dateFormat  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String dateTimeString  = dateFormat.format(new Date());
         String classNameString = this.getClass().getCanonicalName();
         
         // logging to System.out for now, if we even log anything...
-        System.out.printf("[%s %s %s] %s",dateTimeString,levelString,classNameString.substring(Math.max(0, classNameString.length() - 7)),msg);
+        if (level >= logLevel) {
+            System.out.printf("[%s %s %s] %s\n",dateTimeString,levelString,classNameString.substring(Math.max(0, classNameString.length() - CHARLIMIT_CLASS)),msg);
+        }
     }
 
     public boolean isLevelEnabled(int level) {
