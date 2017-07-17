@@ -18,18 +18,19 @@ package samurai.web;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.IllegalFormatException;
 
-import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.log.LogChute;
 
 public class SamuraiVelocityLogger implements LogChute {
     
     // Constant: Limit classnames to 24 chars
-    static int CHARLIMIT_CLASS = 24;
+    static final int CHARLIMIT_CLASS = 24;
+    // Constant: Date format: 2017-07-17 14:51:11.491
+    private final String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss.SSS";
     
-    // Default: logLevel INFO (no TRACE/DEBUG)
-    private int logLevel = INFO_ID;
+    private int logLevel = 1;
     
     public SamuraiVelocityLogger() {
     }
@@ -38,33 +39,29 @@ public class SamuraiVelocityLogger implements LogChute {
     	this.setLevel(level);
     }
     
+    public SamuraiVelocityLogger(String levelString) {
+    	this.setLevel(getLevelIntForString(levelString));
+    }
+    
     public void init(RuntimeServices runtimeServices) throws Exception {
     }
 
     private void logVelocityMessage(int level, String msg) {
-        String levelString = null;
-        switch (level) {
-            case TRACE_ID: levelString = "TRACE";
-                break;
-            case DEBUG_ID: levelString = "DEBUG";
-                break;
-            case INFO_ID: levelString  = "INFO ";
-                break;
-            case WARN_ID: levelString  = "WARN ";
-                break;
-            case ERROR_ID: levelString = "ERROR";
-                break;
-            default:       levelString = "INFO ";
-                break;
-        }
+        String levelString = getLevelStringForInt(level);
         
-        DateFormat dateFormat  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+        DateFormat dateFormat  = new SimpleDateFormat(DATE_FORMAT);
         String dateTimeString  = dateFormat.format(new Date());
         String classNameString = new Exception().getStackTrace()[2].getClassName();;
         
         // logging to System.out for now, if we even log anything...
-        if (level >= logLevel) {
-            System.out.printf("[%s %s %24s] %s\n",dateTimeString,levelString,classNameString.substring(Math.max(0, classNameString.length() - CHARLIMIT_CLASS)),msg);
+        if (level >= this.logLevel) {
+        	try {
+        		System.out.printf("[%s %s %24s] %s\n",dateTimeString,levelString,classNameString.substring(Math.max(0, classNameString.length() - CHARLIMIT_CLASS)),msg);
+        	} catch (IllegalFormatException e) {
+        		System.out.println("BAD NEWS - LOGGER EXCEPTION AT PRINTF" + e.getMessage());
+        		e.printStackTrace();
+        		System.out.println("BAD NEWS - LOGGER EXCEPTION AT PRINTF (END OF TRACE)");
+        	}
         }
     }
 
@@ -83,9 +80,13 @@ public class SamuraiVelocityLogger implements LogChute {
             return false;
         }
     }
+
+    public String getLevel() {
+    	return getLevelStringForInt(this.logLevel);
+    }
     
-    public int getLevel(int level) {
-        return level;
+    public int getLevelInt() {
+        return this.logLevel;
     }
 
     public void log(int level, String msg) {
@@ -94,25 +95,12 @@ public class SamuraiVelocityLogger implements LogChute {
 
     public void log(int level, String msg, Throwable e) {
         logVelocityMessage(level, msg + " EXCEPTION: " + e);
+        e.printStackTrace();
     }
     
     public void log(String levelString, String msg) {
-        int level;
-        switch (levelString) {
-        case "TRACE": level = TRACE_ID;
-            break;
-        case "DEBUG": level = DEBUG_ID;
-            break;
-        case "INFO": level  = INFO_ID;
-            break;
-        case "WARN": level  = WARN_ID;
-            break;
-        case "ERROR": level = ERROR_ID;
-            break;
-        default:       level = INFO_ID;
-            break;
-    }
-        logVelocityMessage(level, msg);
+    	int levelInt = getLevelIntForString(levelString);
+        logVelocityMessage(levelInt, msg);
     }
     
     // Default if no level is provided
@@ -140,4 +128,42 @@ public class SamuraiVelocityLogger implements LogChute {
         logVelocityMessage(ERROR_ID, msg);   
     }
 
+    public String getLevelStringForInt(int levelInt) {
+    	String levelString = null;
+    	switch (levelInt) {
+    		case TRACE_ID: levelString = "TRACE";
+    			break;
+    		case DEBUG_ID: levelString = "DEBUG";
+    			break;
+    		case INFO_ID: levelString  = "INFO ";
+    			break;
+    		case WARN_ID: levelString  = "WARN ";
+    			break;
+    		case ERROR_ID: levelString = "ERROR";
+    			break;
+    		default:       levelString = "NONE ";
+    	break;
+    	}
+    	return levelString;
+    }
+    
+    public int getLevelIntForString(String levelString) {
+    	int levelInt = 0;
+        switch (levelString) {
+        	case "TRACE": levelInt = TRACE_ID;
+            	break;
+        	case "DEBUG": levelInt = DEBUG_ID;
+            	break;
+        	case "INFO": levelInt  = INFO_ID;
+            	break;
+        	case "WARN": levelInt  = WARN_ID;
+            	break;
+        	case "ERROR": levelInt = ERROR_ID;
+            	break;
+        	default:      levelInt = INFO_ID;
+            	break;
+    	}
+    	return levelInt;
+    }
+    
 }
