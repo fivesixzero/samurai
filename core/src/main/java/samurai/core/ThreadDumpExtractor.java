@@ -23,6 +23,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
+// TODO Look into any possible optimizations
+// TODO Add detailed duration telemetry (at least) and maybe heap to try and see if improvements help
 
 public class ThreadDumpExtractor {
     private ThreadDumpRenderer renderer;

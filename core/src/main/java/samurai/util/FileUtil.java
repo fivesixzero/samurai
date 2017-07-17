@@ -19,6 +19,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class FileUtil {
 
@@ -54,4 +56,19 @@ public class FileUtil {
             }
         }
     }
+    
+    public static long getFileCount(Path dir) throws IOException, SecurityException { 
+    	long count = 0;
+    	try {
+    		count = Files.walk(dir)
+    				.parallel()
+    				.filter(p -> !p.toFile().isDirectory())
+    				.count();
+    	} catch (SecurityException e) {
+    		e.printStackTrace();
+    	} catch (IOException e) {
+    		e.printStackTrace(); }
+    	return count;
+      }
+
 }

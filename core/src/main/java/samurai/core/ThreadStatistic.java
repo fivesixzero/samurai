@@ -17,7 +17,9 @@ package samurai.core;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 public class ThreadStatistic implements ThreadDumpRenderer, Serializable {
     private List<FullThreadDump> fullThreadDumps = new ArrayList<FullThreadDump>();
@@ -118,5 +120,37 @@ public class ThreadStatistic implements ThreadDumpRenderer, Serializable {
         throw new AssertionError("no thread dump with id:" + id + " found");
     }
 
+    // TODO Add a bunch of getters for logging and/or additional analysis
+    // how many threads in each full thread dump?
+    // how many threads with names matching which strings? (workers? sabre event? etc?)
+    // how many threads in a waiting/deadlocked state?
+    // how long were x threads waiting in a wait state? whole time or just part?
+    // how many seconds apart are the thread dumps, on average? is there an average or is it crazy?
+    
+    public long getAvgThreadsPerThreadDump() {
+    	int avgThreads = 0; int total = 0; int count = 0;
+    	ListIterator<FullThreadDump> ftd = fullThreadDumps.listIterator();
+    	while(ftd.hasNext()){
+    		total += ftd.next().getThreadCount();
+    		count++; }
+    	
+    	if (total > 0) {
+    		avgThreads = total / count;
+            return avgThreads;
+    	} else {
+    		avgThreads = 0;
+            return avgThreads;
+    	}
+    }
+    
+    public long getTotalThreads() {
+    	long total = 0;
+    	ListIterator<FullThreadDump> ftd = fullThreadDumps.listIterator();
+    	while(ftd.hasNext()) {
+    		total += ftd.next().getThreadCount();
+    	}
+    	
+    	return total;
+    }
 
 }

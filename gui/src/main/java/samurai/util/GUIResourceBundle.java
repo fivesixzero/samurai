@@ -43,6 +43,8 @@ import java.util.MissingResourceException;
 import java.util.Properties;
 import java.util.ResourceBundle;
 
+// TODO Clean this up probably. I think path specificity issues are causing test failures.
+
 public class GUIResourceBundle extends ResourceBundle {
     private static Map<String, Map<String, GUIResourceBundle>> resourceses = new HashMap<String, Map<String, GUIResourceBundle>>();
     private static final String DEFAULT_RESOURCE_NAME = "messages";

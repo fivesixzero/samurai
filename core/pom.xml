@@ -1,12 +1,10 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>samurai</groupId>
     <artifactId>core</artifactId>
     <packaging>jar</packaging>
-    <version>3.0-SNAPSHOT</version>
-    <name>Samurai</name>
+    <version>3.1-SNAPSHOT</version>
+    <name>Samurai Core</name>
     <url>http://samuraism.jp/samurai/</url>
     <licenses>
         <license>
@@ -59,12 +57,12 @@
         <dependency>
             <groupId>org.apache.velocity</groupId>
             <artifactId>velocity</artifactId>
-            <version>1.5</version>
+            <version>1.7</version>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.14.8</version>
+            <version>1.16.18</version>
         </dependency>
     </dependencies>
     <build>
