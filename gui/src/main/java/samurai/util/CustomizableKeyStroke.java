@@ -26,6 +26,7 @@ import java.awt.Component;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 public class CustomizableKeyStroke {
@@ -43,14 +44,24 @@ public class CustomizableKeyStroke {
             location = packageName + "/" + KEY_STROKE_FILE +
                     "_win.properties";
         }
-        InputStream is = this.getClass().getClassLoader().getResourceAsStream(
-                location);
+        try { 
+        	location = Paths.get(location).toFile().getAbsolutePath();
+        } catch (Exception e) {
+        	System.out.println("Exception trying to get keyfile at :" + location + "\n" + e.getMessage() );
+        	e.printStackTrace();
+        }
+        
+        InputStream is = this.getClass().getClassLoader().getResourceAsStream(location);
+                // location);
         if (null != is) {
             try {
                 props.load(is);
-            } catch (IOException ioe) {
+            } catch (IOException e) {
                 //don't care if it exists
                 //throw new AssertionError("The keystroke resource must be exist:" + location);
+            	
+            	System.out.println("Exception trying to get keyfile at :" + location + "\n" + e.getMessage() );
+            	e.printStackTrace();
             }
         }
     }
