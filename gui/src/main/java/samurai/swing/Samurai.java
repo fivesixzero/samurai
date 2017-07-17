@@ -27,31 +27,162 @@ import samurai.util.OSDetector;
 import samurai.web.SamuraiVelocityLogger;
 
 import java.io.File;
+import java.util.Arrays;
 
 
 public class Samurai {
-        
-
+	
     // TODO Add telemetry/metrics for Duration, Throughput, Saturation, Errors to all
     
     // TODO Redo CLI output possibly using a totally fresh class with its own main()
-    private static final String OPTION_HTML = "-html";
-    private static final String OPTION_THREAD_DUMP = "-td";
-    private static final String OPTION_OUTPUT = "-o";
-
-    // TODO Add logging to this main() class!
-    private SamuraiVelocityLogger out = new SamuraiVelocityLogger();
+    private static final String OPTION_HELP = "h";
+    // Later we may output to different formats but for now html is it. Commenting out "Format" options
+    //private static final String OPTION_FORMAT = "-f";
+    private static final String OPTION_INPUT = "i";
+    private static final String OPTION_OUTPUT = "o";
+    private static final String OPTION_PROGRESS = "p";
+    
+    // TODO Add more logging to this main() class!
+    private static SamuraiVelocityLogger out = new SamuraiVelocityLogger();
+    
+    private static Options options = new Options();
     
     private static GUIResourceBundle resources = GUIResourceBundle.getInstance();
 
     public static void main(String[] args) throws Exception {
-        if(args!=null && args.length > 0 && args[0].equals(OPTION_HTML)) {
-            parseAndGenerateHTML(args);
+    	// TODO Disable debug logging before releasing...
+    	out.setLevel(1);
+    	
+    	out.logInfo("STARTUP:: main() entrance!");
+    	
+    	/* set up to handle CLI args the Apache Commons-CLI way :) */
+
+        /* Add to list of CLI options */
+        /* TODO Break option assignment/constants out into its own class, either in Core or in a CLI-focused project */
+        options.addOption(OPTION_HELP, "help", false, "Output html");
+        // options.addOption("f", false, "Output Format (default: html");
+        options.addOption(OPTION_INPUT, "input", true, "Thread dump file path");
+        options.addOption(OPTION_OUTPUT, "output", true, "Output directory path");
+        options.addOption(OPTION_PROGRESS, "progress", false, "Print progress");
+    	
+        /* Set up to parse in a try */
+        CommandLineParser parser = new DefaultParser();
+
+    	out.logDebug("STARTUP:: CLI Handling start!");
+    	// Init vars before try
+    	String threadDumpPath = null;
+    	String outputPath = null;
+    	Boolean progressFlag = null;
+    	// Try to parse the CLI, fail well if it doesn't work out
+        try {
+            CommandLine cmd = parser.parse(options, args);
+            threadDumpPath = cmd.getOptionValue(OPTION_INPUT);
+            outputPath = cmd.getOptionValue(OPTION_OUTPUT);
+            progressFlag = cmd.hasOption(OPTION_PROGRESS);
+        } catch (ParseException e) {
+        	out.logError("CLI:: ParseException! [" + e.getMessage() + "]");
+        } catch (Exception e) {
+        	out.logError("CLI:: Exception! [" + e.getMessage() + "]"); }
+        out.logDebug("STARTUP:: CLI Handling complete!");
+        
+        // If we've actually got any args, proceed to generate that HTML. :D
+        if(args!=null && args.length > 0) {
+        	out.logDebug("ARGSCHECK:: Got args! args.length(): [" + args.length + "]");
+        	out.logDebug("ARGSCHECK:: Args: [" + Arrays.toString(args) + "]");
+        	out.logDebug("ARGSCHECK:: input:  [" + threadDumpPath + "]");
+        	out.logDebug("ARGSCHECK:: output: [" + outputPath + "]");
+        	out.logDebug("ARGSCHECK:: Handing off to parseAndGenerateHTML()");
+            parseAndGenerateHTML(threadDumpPath, outputPath, progressFlag);
+        	System.exit(0);
+        // If we don't have any args, that's fine, just fire up the old GUI and be sloth-like
         } else {
             startGUI();
         }
     }
+    
+    private static void parseAndGenerateHTML(String threadDumpPath, String outputPath, Boolean progressFlag){
+    	out.logInfo("HTML:: parseAndGenerateHTML() Start!");
+        out.logDebug("HTML:: input:  [" + threadDumpPath + "]");
+        out.logDebug("HTML:: output: [" + outputPath + "]");
+        out.logDebug("HTML:: progressFlag: [" + progressFlag + "]");
 
+        out.logDebug("HTML:: Var check start!");
+        // Check for null in/out path values since that won't work, lol
+        if(threadDumpPath == null) {
+        	out.logWarn("HTML:: Null path for input!");
+        	out.logWarn("HTML:: input:  [" + threadDumpPath + "]");
+        	out.logWarn("HTML:: output: [" + outputPath + "]");
+    		System.exit(1); }
+        if(outputPath == null) {
+        	out.logWarn("HTML:: Null path for output!");
+        	out.logWarn("HTML:: input:  [" + threadDumpPath + "]");
+        	out.logWarn("HTML:: output: [" + outputPath + "]");
+    		System.exit(1); }
+        // Check for actual file existence since we might need one.
+        File threadDumpFile = new File(threadDumpPath);
+        if(!threadDumpFile.exists() || !threadDumpFile.isFile()) {
+        	out.logWarn("HTML:: No existence or not file for input!");
+        	out.logWarn("HTML:: input:  [" + threadDumpPath + "]");
+        	out.logWarn("HTML:: output: [" + outputPath + "]");
+    		System.exit(1); }
+        
+        // Check for output dir existence and, if it doesn't exist, create it
+        File outputDir = new File(outputPath);
+        if(!outputDir.exists()) {
+        	out.logInfo("HTML:: mkdir() required for output path: [" + outputPath + "]");
+        	try {
+        		boolean dirMade = outputDir.mkdir();
+            	out.logDebug("HTML:: mkdir() dirMade: [" + dirMade + "]");
+        	} catch (SecurityException e) {
+        		out.logError("HTML:: SecurityException on mkdir()! Check writability!");
+        		out.logError("HTML:: input:  [" + threadDumpPath + "]");
+        		out.logError("HTML:: output: [" + outputPath + "]");
+        		out.logError("HTML:: Exception message: [" + e.getMessage() + "]");
+        		System.exit(1);
+        	} catch (Exception e) {
+        		out.logError("HTML:: Exception on mkdir()!");
+        		out.logError("HTML:: input:  [" + threadDumpPath + "]");
+        		out.logError("HTML:: output: [" + outputPath + "]");
+        		out.logError("HTML:: Exception message: [" + e.getMessage() + "]");
+        		System.exit(1);
+        	}
+        }
+        
+        // Check to make sure output directory is, like, actually there.
+        if(!outputDir.exists()) {
+        	out.logError("HTML:: exists() fail for output dir!");
+    		out.logError("HTML:: input:  [" + threadDumpPath + "]");
+    		out.logError("HTML:: output: [" + outputPath + "]");
+    		System.exit(1); }
+        // ... and a directory.
+        if(!outputDir.isDirectory()) {
+        	out.logError("HTML:: isDirectory() fail for output dir!");
+    		out.logError("HTML:: input:  [" + threadDumpPath + "]");
+    		out.logError("HTML:: output: [" + outputPath + "]");
+    		System.exit(1); }
+
+        out.logDebug("HTML:: Var check success!");
+
+        // Do that funky rendering we love so well.
+        HtmlRenderer htmlRenderer = new HtmlRenderer();
+        out.logDebug("HTML:: calling htmlRender.extract!");
+        try {
+        	htmlRenderer.extract(threadDumpFile, outputDir, progressFlag);
+        } catch (Exception e) {
+    		out.logError("HTML:: Exception on mkdir()!");
+    		out.logError("HTML:: input:  [" + threadDumpPath + "]");
+    		out.logError("HTML:: output: [" + outputPath + "]");
+    		out.logError("HTML:: Exception message: [" + e.getMessage() + "]");
+    		System.exit(1); }
+
+    // end parseAndGenerateHTML(string, string, boolean)
+    }
+
+    private static void printHelp(Options options) {
+        HelpFormatter formatter = new HelpFormatter();
+        formatter.printHelp("java -jar samurai.jar [-i <inputfile> -o <outputfile>]", options );
+    }
+    
     private static void startGUI() {
         if (OSDetector.isMac()) {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
@@ -70,49 +201,5 @@ public class Samurai {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private static void parseAndGenerateHTML(String[] args){
-        Options options = new Options();
-        options.addOption("html", false, "Output html");
-        options.addOption("td", "threaddump", true, "Thread dump file path");
-        options.addOption("o", "output", true, "Output directory path");
-        options.addOption("p", "progress", false, "Print progress");
-        CommandLineParser parser = new DefaultParser();
-        try {
-            CommandLine cmd = parser.parse(options, args);
-            String threadDumpPath = cmd.getOptionValue("td");
-            String outputPath = cmd.getOptionValue("o");
-            boolean printProgress = cmd.hasOption("p");
-            if(threadDumpPath == null || outputPath == null) {
-                printHelp(options);
-                return;
-            }
-            File threadDumpFile = new File(threadDumpPath);
-            if(!threadDumpFile.exists() || !threadDumpFile.isFile()) {
-                System.err.println(threadDumpPath + " is not a file");
-                printHelp(options);
-                return;
-            }
-            File outputDir = new File(outputPath);
-            if(!outputDir.exists()) {
-                outputDir.mkdir();
-            }
-            if(!outputDir.exists() || !outputDir.isDirectory()) {
-                System.err.println(outputPath + " does not exist");
-                printHelp(options);
-                return;
-            }
-            HtmlRenderer htmlRenderer = new HtmlRenderer();
-            htmlRenderer.extract(threadDumpFile, outputDir, printProgress);
-        } catch (ParseException e) {
-            printHelp(options);
-        }
-    }
-
-    private static void printHelp(Options options) {
-        System.out.println("Bad arguments");
-        HelpFormatter formatter = new HelpFormatter();
-        formatter.printHelp( "java -jar samurai.jar", options );
     }
 }
