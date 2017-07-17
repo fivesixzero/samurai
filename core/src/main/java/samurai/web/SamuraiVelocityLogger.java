@@ -34,6 +34,10 @@ public class SamuraiVelocityLogger implements LogChute {
     public SamuraiVelocityLogger() {
     }
     
+    public SamuraiVelocityLogger(int level) {
+    	this.setLevel(level);
+    }
+    
     public void init(RuntimeServices runtimeServices) throws Exception {
     }
 

@@ -29,30 +29,39 @@ import samurai.web.SamuraiVelocityLogger;
 import java.io.File;
 import java.util.Arrays;
 
-
 public class Samurai {
+	
+
+	private static final String OPTION_HELP = "h";
+	// Later we may output to different formats but for now html is it. Commenting out "Format" options
+	//private static final String OPTION_FORMAT = "-f";
+	private static final String OPTION_INPUT = "i";
+	private static final String OPTION_OUTPUT = "o";
+	private static final String OPTION_PROGRESS = "p";
+
+	public static int LOG_LEVEL = -1;
 	
     // TODO Add telemetry/metrics for Duration, Throughput, Saturation, Errors to all
     
     // TODO Redo CLI output possibly using a totally fresh class with its own main()
-    private static final String OPTION_HELP = "h";
-    // Later we may output to different formats but for now html is it. Commenting out "Format" options
-    //private static final String OPTION_FORMAT = "-f";
-    private static final String OPTION_INPUT = "i";
-    private static final String OPTION_OUTPUT = "o";
-    private static final String OPTION_PROGRESS = "p";
     
     // TODO Add more logging to this main() class!
-    private static SamuraiVelocityLogger out = new SamuraiVelocityLogger();
+    private static SamuraiVelocityLogger out = new SamuraiVelocityLogger(LOG_LEVEL);
     
     private static Options options = new Options();
     
     private static GUIResourceBundle resources = GUIResourceBundle.getInstance();
 
     public static void main(String[] args) throws Exception {
-    	// TODO Disable debug logging before releasing...
-    	out.setLevel(1);
+    	out.logInfo("----------------------------------------------------------");
+    	out.logInfo("---- Samurai v3.1 ---------------------------- Start! ----");
+    	out.logInfo("----------------------------------------------------------");
     	
+    	// TODO Disable debug logging before releasing...
+    	out.setLevel(-1);
+    	
+    	out.logDebug("LOGGING: Debug is turned on!");
+    
     	out.logInfo("STARTUP:: main() entrance!");
     	
     	/* set up to handle CLI args the Apache Commons-CLI way :) */
@@ -87,17 +96,29 @@ public class Samurai {
         
         // If we've actually got any args, proceed to generate that HTML. :D
         if(args!=null && args.length > 0) {
+        	out.logInfo("----------------------------------------------------------");
+        	out.logInfo("---- Samurai v3.1 ------------ CLI HTML Render Start! ----");
+        	out.logInfo("----------------------------------------------------------");
+        	
         	out.logDebug("ARGSCHECK:: Got args! args.length(): [" + args.length + "]");
         	out.logDebug("ARGSCHECK:: Args: [" + Arrays.toString(args) + "]");
         	out.logDebug("ARGSCHECK:: input:  [" + threadDumpPath + "]");
         	out.logDebug("ARGSCHECK:: output: [" + outputPath + "]");
         	out.logDebug("ARGSCHECK:: Handing off to parseAndGenerateHTML()");
+        	
             parseAndGenerateHTML(threadDumpPath, outputPath, progressFlag);
-        	System.exit(0);
         // If we don't have any args, that's fine, just fire up the old GUI and be sloth-like
         } else {
+        	out.logInfo("----------------------------------------------------------");
+        	out.logInfo("---- Samurai v3.1 ------------------------ GUI Start! ----");
+        	out.logInfo("----------------------------------------------------------");
             startGUI();
         }
+
+    	out.logInfo("----------------------------------------------------------");
+    	out.logInfo("---- Samurai v3.1 ------------------------- Complete! ----");
+    	out.logInfo("----------------------------------------------------------");
+    	
     }
     
     private static void parseAndGenerateHTML(String threadDumpPath, String outputPath, Boolean progressFlag){
@@ -169,10 +190,11 @@ public class Samurai {
         try {
         	htmlRenderer.extract(threadDumpFile, outputDir, progressFlag);
         } catch (Exception e) {
-    		out.logError("HTML:: Exception on mkdir()!");
+    		out.logError("HTML:: Exception on htmlRender()!");
     		out.logError("HTML:: input:  [" + threadDumpPath + "]");
     		out.logError("HTML:: output: [" + outputPath + "]");
     		out.logError("HTML:: Exception message: [" + e.getMessage() + "]");
+    		e.printStackTrace();
     		System.exit(1); }
 
     // end parseAndGenerateHTML(string, string, boolean)
