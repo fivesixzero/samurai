@@ -19,10 +19,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.apache.velocity.app.Velocity;
 import org.apache.velocity.runtime.RuntimeServices;
 import org.apache.velocity.runtime.log.LogChute;
 
-public class NullVelocityLogger implements LogChute {
+public class SamuraiVelocityLogger implements LogChute {
     
     // Constant: Limit classnames to 24 chars
     static int CHARLIMIT_CLASS = 24;
@@ -30,13 +31,13 @@ public class NullVelocityLogger implements LogChute {
     // Default: logLevel INFO (no TRACE/DEBUG)
     private int logLevel = INFO_ID;
     
-    public NullVelocityLogger() {
+    public SamuraiVelocityLogger() {
     }
     
     public void init(RuntimeServices runtimeServices) throws Exception {
     }
 
-    public void logVelocityMessage(int level, String msg) {
+    private void logVelocityMessage(int level, String msg) {
         String levelString = null;
         switch (level) {
             case TRACE_ID: levelString = "TRACE";
@@ -55,7 +56,7 @@ public class NullVelocityLogger implements LogChute {
         
         DateFormat dateFormat  = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
         String dateTimeString  = dateFormat.format(new Date());
-        String classNameString = this.getClass().getCanonicalName();
+        String classNameString = new Exception().getStackTrace()[2].getClassName();;
         
         // logging to System.out for now, if we even log anything...
         if (level >= logLevel) {
@@ -91,6 +92,30 @@ public class NullVelocityLogger implements LogChute {
         logVelocityMessage(level, msg + " EXCEPTION: " + e);
     }
     
+    public void log(String levelString, String msg) {
+        int level;
+        switch (levelString) {
+        case "TRACE": level = TRACE_ID;
+            break;
+        case "DEBUG": level = DEBUG_ID;
+            break;
+        case "INFO": level  = INFO_ID;
+            break;
+        case "WARN": level  = WARN_ID;
+            break;
+        case "ERROR": level = ERROR_ID;
+            break;
+        default:       level = INFO_ID;
+            break;
+    }
+        logVelocityMessage(level, msg);
+    }
+    
+    // Default if no level is provided
+    public void log(String msg) {
+        logVelocityMessage(INFO_ID,msg);
+    }
+
     public void logTrace(String msg) {
         logVelocityMessage(TRACE_ID, msg);   
     }

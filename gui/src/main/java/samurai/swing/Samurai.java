@@ -24,15 +24,24 @@ import org.apache.commons.cli.ParseException;
 import samurai.html.HtmlRenderer;
 import samurai.util.GUIResourceBundle;
 import samurai.util.OSDetector;
+import samurai.web.SamuraiVelocityLogger;
 
 import java.io.File;
 
 
 public class Samurai {
+        
+
+    // TODO Add telemetry/metrics for Duration, Throughput, Saturation, Errors to all
+    
+    // TODO Redo CLI output possibly using a totally fresh class with its own main()
     private static final String OPTION_HTML = "-html";
     private static final String OPTION_THREAD_DUMP = "-td";
     private static final String OPTION_OUTPUT = "-o";
 
+    // TODO Add logging to this main() class!
+    private SamuraiVelocityLogger out = new SamuraiVelocityLogger();
+    
     private static GUIResourceBundle resources = GUIResourceBundle.getInstance();
 
     public static void main(String[] args) throws Exception {

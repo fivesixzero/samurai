@@ -58,7 +58,7 @@ public class VelocityHtmlRenderer implements Constants {
         Velocity.setProperty("resource.loader", "class");
         Velocity.setProperty("class.resource.loader.class",
                 "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
-        Velocity.setProperty("runtime.log.logsystem.class", "samurai.web.NullVelocityLogger");
+        Velocity.setProperty("runtime.log.logsystem.class", "samurai.web.SamuraiVelocityLogger");
         try {
             Velocity.init();
             tableView = Velocity.getTemplate("samurai/web/table.vm");
