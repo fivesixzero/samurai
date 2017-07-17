@@ -60,7 +60,7 @@ public class SamuraiVelocityLogger implements LogChute {
         
         // logging to System.out for now, if we even log anything...
         if (level >= logLevel) {
-            System.out.printf("[%s %s %s] %s\n",dateTimeString,levelString,classNameString.substring(Math.max(0, classNameString.length() - CHARLIMIT_CLASS)),msg);
+            System.out.printf("[%s %s %24s] %s\n",dateTimeString,levelString,classNameString.substring(Math.max(0, classNameString.length() - CHARLIMIT_CLASS)),msg);
         }
     }
 
