@@ -3,9 +3,14 @@
  */
 package samurai.cli;
 
-import java.io.File;
 import java.nio.file.Paths;
+import java.time.Instant;
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -16,6 +21,15 @@ import org.apache.commons.cli.ParseException;
 
 import samurai.html.HtmlRenderer;
 import samurai.web.SamuraiVelocityLogger;
+
+import com.google.common.collect.Maps;
+import com.microsoft.applicationinsights.TelemetryClient;
+import com.microsoft.applicationinsights.TelemetryConfiguration;
+import com.microsoft.applicationinsights.core.dependencies.googlecommon.base.Stopwatch;
+import com.microsoft.applicationinsights.telemetry.Duration;
+import com.microsoft.applicationinsights.telemetry.RemoteDependencyTelemetry;
+import com.microsoft.applicationinsights.telemetry.RequestTelemetry;
+import com.microsoft.applicationinsights.telemetry.MetricTelemetry;
 
 /**
  * @author erik.hess
@@ -36,16 +50,36 @@ public class CLILauncher {
 	// Default logging not debug since this is mostly a completed version. Whew.
 	public static int DEFAULT_LOG_LEVEL = -1;
 	
+
     // TODO Add telemetry/metrics for Duration, Throughput, Saturation, Errors to all
     
     // TODO Redo CLI output possibly using a totally fresh class with its own main()
     
     // TODO Add more logging to this main() class!
-    private static SamuraiVelocityLogger out = new SamuraiVelocityLogger(DEFAULT_LOG_LEVEL);
-    
+	
+    /**
+     *  out() = logger object
+     */
+    public static SamuraiVelocityLogger out = new SamuraiVelocityLogger(DEFAULT_LOG_LEVEL);
+
+    /**
+     *  telAz() = telemetry object (Azure)
+     */
+    public static TelemetryClient telAz = new TelemetryClient();
+
     private static Options options = new Options();
     
+    /**
+     * PSVM main() class for CLI Samurai interface
+     * 
+     * @param args
+     * @throws Exception
+     */
     public static void main(String[] args) throws Exception {
+    	// telemetry stopwatch start
+    	Stopwatch mainStartup = new Stopwatch();
+    	mainStartup.start();
+    	
     	out.setLevel(DEFAULT_LOG_LEVEL);
     	
     	out.logInfo("------------------------------------------ Konichiwa! ----");
@@ -55,6 +89,50 @@ public class CLILauncher {
     	out.logInfo("STARTUP:: LOGGING: " + out.getLevel());
 
     	out.logInfo("STARTUP:: main() entrance!");
+    	
+    	/*
+    	 * Set up telemetry!
+    	 */
+    	
+    	try {
+    		
+    	// Fire up the client class...
+        // Set the key...
+        telAz.getContext().setInstrumentationKey("0de4433-c3af-4165-98e7-6ba422cb9991");
+        TelemetryConfiguration.getActive().getChannel().setDeveloperMode(true);
+        out.logInfo("TELE:: Application Insights telemetry started!");
+    	} catch (Exception E) {
+    		out.logWarn("TELE:: Telemetry setup failed!");
+    	}
+    	
+    	try {
+    		out.logInfo("TELE:: telAz.toString() [" + telAz.toString() + "]");
+    		
+    	    Runtime runtime = Runtime.getRuntime();
+    		Map<String,String> propsEventAppStart = Maps.<String, String>newHashMap(); 
+    		propsEventAppStart.put("OS Name", System.getProperty("os.name"));
+    		propsEventAppStart.put("OS Version", System.getProperty("os.version"));
+    		propsEventAppStart.put("OS Arch", System.getProperty("os.arch"));
+    		propsEventAppStart.put("OS Arch", System.getProperty("os.arch"));
+    		propsEventAppStart.put("OS Arch", System.getProperty("os.arch"));
+    		propsEventAppStart.put("OS Arch", System.getProperty("os.arch"));
+    		propsEventAppStart.put("App Version", RELEASE_VERSION);
+    		propsEventAppStart.put("App Build","00001");
+    		propsEventAppStart.put("App Loglevel",out.getLevel());
+    		Map<String,Double> metricsEventAppStart = Maps.<String, Double>newHashMap(); 
+    		metricsEventAppStart.put("CPU Cores", Double.longBitsToDouble(runtime.availableProcessors()));
+    		metricsEventAppStart.put("mainStartupTimer", Double.longBitsToDouble(mainStartup.elapsedMillis()));
+    		metricsEventAppStart.put("totalMemory", Double.longBitsToDouble(Runtime.getRuntime().totalMemory()));
+    		metricsEventAppStart.put("maxMemory", Double.longBitsToDouble(Runtime.getRuntime().maxMemory()));
+    		metricsEventAppStart.put("freeMemory", Double.longBitsToDouble(Runtime.getRuntime().freeMemory()));
+    		metricsEventAppStart.put("usedMemory", Double.longBitsToDouble(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
+    		telAz.trackEvent("Application Start", propsEventAppStart, metricsEventAppStart);
+    		
+    		out.logInfo("TELE:: Metrics sent to Azure for App Start!");
+    	} catch (Exception E) {
+    		
+    	}
+    	
 
     	/* 
     	 * Set up to handle CLI args the Apache Commons-CLI way :)
@@ -100,8 +178,20 @@ public class CLILauncher {
     		out.logError("CLI:: Exception! [" + e.getMessage() + "]"); }
     	out.logDebug("STARTUP:: CLI Handling complete!");
 
-    	if(args!=null && args.length > 0) {
-        	// If we've actually got args, proceed to generate that HTML. :D
+    	if( args != null && args.length > 0) {
+        	// If we've actually got args, proceed to do the things. :D
+    		
+    		Map<String,String> propsMainEvent = Maps.<String, String>newHashMap();
+    		propsMainEvent.put("CLI Arguments", args.toString()); 
+    		Map<String,Double> metricsMainEvent = Maps.<String, Double>newHashMap(); 
+    		metricsMainEvent.put("CLI Args Count", Double.longBitsToDouble(args.length));
+    		metricsMainEvent.put("mainStartupTimer", Double.longBitsToDouble(mainStartup.elapsedMillis()));
+    		metricsMainEvent.put("totalMemory", Double.longBitsToDouble(Runtime.getRuntime().totalMemory()));
+    		metricsMainEvent.put("maxMemory", Double.longBitsToDouble(Runtime.getRuntime().maxMemory()));
+    		metricsMainEvent.put("freeMemory", Double.longBitsToDouble(Runtime.getRuntime().freeMemory()));
+    		metricsMainEvent.put("usedMemory", Double.longBitsToDouble(Runtime.getRuntime().totalMemory() - Runtime.getRuntime().freeMemory()));
+    		telAz.trackEvent("Argument Parsing", propsMainEvent, metricsMainEvent);    		
+    		
     		out.logInfo("----------------------------------------------------------");
     		out.logInfo("---- Samurai v3.1 ------------ CLI HTML Render Start! ----");
     		out.logInfo("----------------------------------------------------------");
@@ -224,19 +314,32 @@ public class CLILauncher {
     	out.logDebug("Main().parseAndGenerateHTML():: Var check success!");
 
     	// Do that funky rendering we love so well.
-    	HtmlRenderer htmlRenderer = new HtmlRenderer();
+   		HtmlRenderer htmlRenderer = new HtmlRenderer();
+    	  	
     	out.logDebug("Main().parseAndGenerateHTML():: calling htmlRender.extract!");
+    	
+    	Stopwatch timer = new Stopwatch();
+    	timer.start();
+    	boolean success = false;
+
     	try {
     		htmlRenderer.extract(threadDumpFile, outputDir, progressFlag);
+    		success = true;
+    		timer.stop();
     	} catch (Exception e) {
     		out.logError("Main().parseAndGenerateHTML():: Exception on htmlRender()!");
     		out.logError("Main().parseAndGenerateHTML():: input:  [" + threadDumpPath + "]");
     		out.logError("Main().parseAndGenerateHTML():: output: [" + outputPath + "]");
     		out.logError("Main().parseAndGenerateHTML():: Exception message: [" + e.getMessage() + "]");
     		e.printStackTrace();
-    		System.exit(1);
+    		success = false;
+    		timer.stop();
+    	} finally {
+    		Duration renderExtractMs = new Duration(timer.elapsedMillis());
+    		telAz.trackDependency("cli", "htmlRender.extract", renderExtractMs, success);
+    		
     	}
-    // end parseAndGenerateHTML(string, string, boolean)
+    	// end parseAndGenerateHTML(string, string, boolean)
     }
 
     private static void printHelp(Options options) {
