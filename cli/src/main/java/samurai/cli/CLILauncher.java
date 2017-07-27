@@ -34,7 +34,7 @@ public class CLILauncher {
 	private static final String OPTION_DEBUG_LONG = "debug";
 
 	// Default logging not debug since this is mostly a completed version. Whew.
-	public static int DEFAULT_LOG_LEVEL = -1;
+	public static int DEFAULT_LOG_LEVEL = 1;
 
 
 	// TODO Add telemetry/metrics for Duration, Throughput, Saturation, Errors to all
@@ -94,7 +94,7 @@ public class CLILauncher {
 		String threadDumpPath = null;
 		String outputPath = null;
 		Boolean progressFlag = null;
-		// Try to parse the CLI, fail well if it doesn't work out
+		// Try to parse the CLI args, fail well if it doesn't work out
 		try {
 			CommandLine cmd = parser.parse(options, args);
 			threadDumpPath = cmd.getOptionValue(OPTION_INPUT);
@@ -102,6 +102,8 @@ public class CLILauncher {
 			progressFlag = cmd.hasOption(OPTION_PROGRESS);
 			if (cmd.hasOption(OPTION_DEBUG_LONG)) {
 				out.setLevel(-1);
+			} else {
+				out.setLevel(1);
 			}
 			if (cmd.hasOption(OPTION_HELP)) {
 				printHelp(options);
@@ -112,7 +114,7 @@ public class CLILauncher {
 			out.logError("CLI:: Exception! [" + e.getMessage() + "]"); }
 		out.logDebug("STARTUP:: CLI Handling complete!");
 
-		if( args != null && args.length > 0) {
+		if( args != null && args.length > 0 ) {
 			// If we've actually got args, proceed to do the things. :D	
 
 			out.logInfo("----------------------------------------------------------");
@@ -121,8 +123,8 @@ public class CLILauncher {
 
 			out.logDebug("Main() if(args):: Got some args! args.length(): [" + args.length + "]");
 			out.logDebug("Main() if(args):: Args: [" + Arrays.toString(args) + "]");
-			out.logDebug("Main() if(args):: input:  [" + threadDumpPath + "]");
-			out.logDebug("Main() if(args):: output: [" + outputPath + "]");
+			out.logInfo("Main() if(args):: input:  [" + threadDumpPath + "]");
+			out.logInfo("Main() if(args):: output: [" + outputPath + "]");
 			out.logDebug("Main() if(args):: Handing off to parseAndGenerateHTML()");
 
 			parseAndGenerateHTML(threadDumpPath, outputPath, progressFlag);
@@ -146,7 +148,7 @@ public class CLILauncher {
 	}
 
 	private static void parseAndGenerateHTML(String threadDumpPath, String outputPath, Boolean progressFlag){
-		out.logInfo("Main().parseAndGenerateHTML():: parseAndGenerateHTML() Start!");
+		out.logDebug("Main().parseAndGenerateHTML():: parseAndGenerateHTML() Start!");
 		out.logDebug("Main().parseAndGenerateHTML():: input:  [" + threadDumpPath + "]");
 		out.logDebug("Main().parseAndGenerateHTML():: output: [" + outputPath + "]");
 		out.logDebug("Main().parseAndGenerateHTML():: progressFlag: [" + progressFlag + "]");
