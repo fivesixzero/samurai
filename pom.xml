@@ -73,7 +73,7 @@ Original page: http://samuraism.jp/samurai/</description>
 		<system>github</system>
 		<url>https://github.com/fivesixzero/samurai/issues</url>
 	</issueManagement>
-	<mailingLists>
+<!-- 	<mailingLists>
 		<mailingList>
 			<name>Samurai</name>
 			<subscribe>samurai-tool-subscribe@googlegroups.com</subscribe>
@@ -96,7 +96,7 @@ Original page: http://samuraism.jp/samurai/</description>
 			<uniqueVersion>false</uniqueVersion>
 			<url>file:${user.home}/maven2/</url>
 		</snapshotRepository>
-	</distributionManagement>
+	</distributionManagement> -->
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -106,7 +106,7 @@ Original page: http://samuraism.jp/samurai/</description>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/com.apple/AppleJavaExtensions -->
 		<!-- <dependency> <groupId>com.apple</groupId> <artifactId>AppleJavaExtensions</artifactId> 
-			<version>1.4</version> </dependency> -->
+			<version>1.4</version> </dependency> replaced with orange-extensions -->
 		<dependency>
 			<groupId>com.yuvimasory</groupId>
 			<artifactId>orange-extensions</artifactId>
@@ -117,11 +117,11 @@ Original page: http://samuraism.jp/samurai/</description>
 			<artifactId>commons-cli</artifactId>
 			<version>1.4</version>
 		</dependency>
-		<dependency>
+<!--  		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
 			<version>1.2.17</version>
-		</dependency>
+		</dependency> not using this yet - someday... -->
 		<dependency>
 			<groupId>samurai</groupId>
 			<artifactId>core</artifactId>
@@ -133,8 +133,8 @@ Original page: http://samuraism.jp/samurai/</description>
 			<version>3.1-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
-	<profiles>
-		<profile>
+<!--  	<profiles>
+		profile>
 			<id>release-sign-artifacts</id>
 			<activation>
 				<property>
@@ -161,7 +161,7 @@ Original page: http://samuraism.jp/samurai/</description>
 				</plugins>
 			</build>
 		</profile>
-	</profiles>
+	</profiles> don't need release profiles since we're not releasing yet -->
 	<modules>
 		<module>core</module>
 		<module>cli</module>

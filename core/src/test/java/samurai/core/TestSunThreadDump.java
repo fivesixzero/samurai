@@ -102,7 +102,7 @@ public class TestSunThreadDump extends TestCase {
     }
 
     public void testSunStackLine() {
-        ThreadStatistic statistic = new ThreadStatistic();
+        //ThreadStatistic statistic = new ThreadStatistic();
         SunStackLine line = new SunStackLine("	at java.lang.Object.wait(Native Method)");
         assertTrue(line.isNativeMethod());
         assertEquals("java.lang.Object", line.getClassName());

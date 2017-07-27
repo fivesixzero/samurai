@@ -42,11 +42,11 @@
 	</profiles>
 
 	<dependencies>
-		<dependency>
+<!-- 		<dependency>
 			<groupId>com.microsoft.azure</groupId>
 			<artifactId>applicationinsights-core</artifactId>
 			<version>1.0.8</version>
-		</dependency>
+		</dependency> not using AzAI by default - only on dedicated branch --> 
 		<dependency>
 			<groupId>com.sun</groupId>
 			<artifactId>tools</artifactId>
